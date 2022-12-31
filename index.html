@@ -19,6 +19,7 @@
                 os = detectOSSimply();
                 if (os == "iphone") {
                     // safari用。DeviceOrientation APIの使用をユーザに許可して貰う
+                    window.alert("safari")
                     document.querySelector("#permit").addEventListener("click", permitDeviceOrientationForSafari);
                     window.addEventListener("deviceorientation", orientation, true);
                 } else if (os == "android") {
@@ -31,10 +32,6 @@
             // ジャイロスコープと地磁気をセンサーから取得
             function orientation(event) {
                 let absolute = event.absolute;
-                let alpha = event.alpha;
-                let beta = event.beta;
-                let gamma = event.gamma;
-
                 let degrees;
                 if(os == "iphone") {
                     // webkitCompasssHeading値を採用
@@ -46,9 +43,6 @@
 
                 document.querySelector("#direction").innerHTML = degrees;
                 document.querySelector("#absolute").innerHTML = absolute;
-                document.querySelector("#alpha").innerHTML = alpha;
-                document.querySelector("#beta").innerHTML = beta;
-                document.querySelector("#gamma").innerHTML = gamma;
             }
 
             // 端末の傾き補正（Android用）
