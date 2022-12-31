@@ -19,13 +19,12 @@
                 os = detectOSSimply();
                 if (os == "iphone") {
                     // safari用。DeviceOrientation APIの使用をユーザに許可して貰う
-                    window.alert("safari")
                     document.querySelector("#permit").addEventListener("click", permitDeviceOrientationForSafari);
                     window.addEventListener("deviceorientation", orientation, true);
                 } else if (os == "android") {
-                    window.addEventListener("deviceorientationabsolute", orientation, true);
+                    window.alert("android未対応")
                 } else{
-                    window.alert("PC未対応サンプル");
+                    window.alert("PC未対応");
                 }
             }
 
@@ -36,47 +35,11 @@
                 if(os == "iphone") {
                     // webkitCompasssHeading値を採用
                     degrees = event.webkitCompassHeading;
-                }else{
-                    // deviceorientationabsoluteイベントのalphaを補正
-                    degrees = compassHeading(alpha, beta, gamma);
                 }
-
                 document.querySelector("#direction").innerHTML = degrees;
                 document.querySelector("#absolute").innerHTML = absolute;
             }
 
-            // 端末の傾き補正（Android用）
-            // https://www.w3.org/TR/orientation-event/
-            function compassHeading(alpha, beta, gamma) {
-                var degtorad = Math.PI / 180; // Degree-to-Radian conversion
-
-                var _x = beta ? beta * degtorad : 0; // beta value
-                var _y = gamma ? gamma * degtorad : 0; // gamma value
-                var _z = alpha ? alpha * degtorad : 0; // alpha value
-
-                var cX = Math.cos(_x);
-                var cY = Math.cos(_y);
-                var cZ = Math.cos(_z);
-                var sX = Math.sin(_x);
-                var sY = Math.sin(_y);
-                var sZ = Math.sin(_z);
-
-                // Calculate Vx and Vy components
-                var Vx = -cZ * sY - sZ * sX * cY;
-                var Vy = -sZ * sY + cZ * sX * cY;
-
-                // Calculate compass heading
-                var compassHeading = Math.atan(Vx / Vy);
-
-                // Convert compass heading to use whole unit circle
-                if (Vy < 0) {
-                    compassHeading += Math.PI;
-                } else if (Vx < 0) {
-                    compassHeading += 2 * Math.PI;
-                }
-
-                return compassHeading * (180 / Math.PI); // Compass Heading (in degrees)
-            }
 
             // 簡易OS判定
             function detectOSSimply() {
@@ -118,9 +81,6 @@
             <input type="button" id="permit" value="SafariでDeviceOrientationを許可"/>
             <li>【方角】<span id="direction"></span></li>
             <li>【absolute】<span id="absolute"></span></li>
-            <li>【alpha】<span id="alpha"></span></li>
-            <li>【beta】<span id="beta"></span></li>
-            <li>【gamma】<span id="gamma"></span></li>
         </ul>
     </body>
 </html>
